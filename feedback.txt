@@ -1,0 +1,3 @@
+When clicking  the invoice on the dashboard it should send to the invoice section and open the details of the invoice invoices should follow a patern that the user can choose from and the invoice naming should be the same for the client once set. When setting client details and choosing the prefered currency it should be  the same when ever an invoice is created for client.
+When editing a choosen template the email is not shown as an editable canva but as html.
+When sending a reminder to a client allow the user to check what is going to be sent to their client or set a fix message for specific client everytime where they confirm that sending this without review is ok

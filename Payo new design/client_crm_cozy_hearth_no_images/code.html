@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;0,700;1,400&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {},
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    fontFamily: {
+                        "headline": ["Public Sans", "sans-serif"],
+                        "body": ["Public Sans", "sans-serif"],
+                        "label": ["Public Sans", "sans-serif"],
+                        "serif": ["Newsreader", "serif"],
+                        "sans": ["Plus Jakarta Sans", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #FDF8F5;
+        }
+        .serif-italic { font-family: 'Newsreader', serif; font-style: italic; }
+    </style>
+</head>
+<body class="bg-[#FDF8F5] text-stone-800 font-sans antialiased">
+<!-- SideNavBar (Persistent Sidebar) -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-[#FDF8F5] dark:bg-stone-950 flex flex-col py-12 px-6 border-r border-stone-100 dark:border-stone-900/50">
+<div class="mb-12">
+<h1 class="text-2xl font-serif font-bold text-[#884B3A] dark:text-[#C27B67]">The Atelier</h1>
+<p class="font-serif italic text-sm text-stone-500">Private Wealth Curator</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 text-stone-500 dark:text-stone-400 px-4 py-3 hover:text-[#884B3A] hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-colors duration-300 scale-95 active:opacity-80" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-sans">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-stone-500 dark:text-stone-400 px-4 py-3 hover:text-[#884B3A] hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-colors duration-300 scale-95 active:opacity-80" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-sans">Invoices</span>
+</a>
+<a class="flex items-center gap-3 text-stone-500 dark:text-stone-400 px-4 py-3 hover:text-[#884B3A] hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-colors duration-300 scale-95 active:opacity-80" href="#">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="font-sans">Template Studio</span>
+</a>
+<!-- Active State: Clients -->
+<a class="flex items-center gap-3 bg-[#D2E5CB] dark:bg-[#566752]/30 text-[#566752] dark:text-[#D2E5CB] rounded-full px-4 py-3 font-semibold scale-95 active:opacity-80 transition-all" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-sans">Clients</span>
+</a>
+</nav>
+<div class="mt-auto">
+<button class="w-full flex items-center gap-3 text-stone-500 dark:text-stone-400 px-4 py-3 hover:text-[#884B3A] hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-colors duration-300 scale-95 active:opacity-80">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-sans">Logout</span>
+</button>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 bg-[#FDF8F5]/80 dark:bg-stone-950/80 backdrop-blur-xl flex justify-end items-center px-8 gap-6 shadow-[0px_12px_32px_rgba(136,75,58,0.06)] z-40">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#884B3A] cursor-pointer hover:text-[#A56350] transition-colors">notifications</span>
+<span class="material-symbols-outlined text-[#884B3A] cursor-pointer hover:text-[#A56350] transition-colors">settings</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 p-8 min-h-screen">
+<header class="mb-10 flex justify-between items-end">
+<div>
+<h2 class="text-4xl font-serif text-[#884B3A] mb-1">Client Rolodex</h2>
+<p class="text-stone-500 font-serif italic text-lg">Curating relationships with precision and care.</p>
+</div>
+<button class="bg-[#884B3A] text-white px-6 py-2.5 rounded-full font-sans font-semibold flex items-center gap-2 hover:bg-[#A56350] transition-all shadow-lg shadow-[#884B3A]/20">
+<span class="material-symbols-outlined text-sm">add</span>
+                Onboard New Client
+            </button>
+</header>
+<!-- Client Grid (Asymmetric / Bento Style) -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Featured Client Card (Large) -->
+<div class="col-span-12 lg:col-span-8 bg-white border border-stone-100 rounded-[2rem] p-8 flex gap-8 items-center shadow-sm hover:shadow-md transition-shadow">
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<span class="text-[10px] uppercase tracking-widest text-[#884B3A] font-bold mb-2 block">Priority Partner</span>
+<h3 class="text-3xl font-serif text-stone-800">Elena Vance</h3>
+<p class="text-stone-500 font-sans">Creative Director @ Lumina Studio</p>
+</div>
+<span class="bg-[#D2E5CB] text-[#566752] text-xs px-3 py-1 rounded-full font-bold">Active Project</span>
+</div>
+<div class="mt-6 grid grid-cols-2 gap-4">
+<div class="p-4 bg-[#FDF8F5] rounded-xl border border-stone-50">
+<p class="text-[10px] text-stone-400 uppercase font-bold">Contact</p>
+<p class="text-sm font-sans text-stone-700 mt-1">elena.v@luminastudio.com</p>
+</div>
+<div class="p-4 bg-[#FDF8F5] rounded-xl border border-stone-50">
+<p class="text-[10px] text-stone-400 uppercase font-bold">Custom Overrides</p>
+<p class="text-sm font-sans text-stone-700 mt-1">15% Loyalty Discount</p>
+</div>
+</div>
+<div class="mt-6 flex gap-3">
+<button class="bg-stone-900 text-white px-5 py-2 rounded-full text-sm font-semibold">View Ledger</button>
+<button class="border border-stone-200 text-stone-600 px-5 py-2 rounded-full text-sm font-semibold hover:bg-stone-50">Edit Details</button>
+</div>
+</div>
+</div>
+<!-- Stats/Metric Card -->
+<div class="col-span-12 lg:col-span-4 bg-[#D2E5CB]/20 border border-[#D2E5CB]/40 rounded-[2rem] p-8 flex flex-col justify-center">
+<span class="material-symbols-outlined text-4xl text-[#566752] mb-4">insights</span>
+<h4 class="text-lg font-serif text-[#566752]">Monthly Retention</h4>
+<div class="text-5xl font-serif text-[#566752] mt-2">94.2%</div>
+<p class="text-sm text-[#566752]/70 mt-2 font-sans">Growth of 2.1% from previous quarter</p>
+</div>
+<!-- Client List Table-ish View (Bento Grid) -->
+<div class="col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Client Card 1 -->
+<div class="bg-white border border-stone-100 rounded-[1.5rem] p-6 hover:shadow-lg transition-all group cursor-pointer relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-stone-400">more_horiz</span>
+</div>
+<div class="flex items-center gap-4 mb-4">
+<div class="h-12 w-12 rounded-full bg-stone-100 flex items-center justify-center font-serif text-lg text-[#884B3A]">JA</div>
+<div>
+<h4 class="font-serif text-lg text-stone-800 leading-tight">Julian Alvarez</h4>
+<p class="text-xs text-stone-500 font-sans">Wealth Management</p>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center gap-2 text-stone-500 text-sm">
+<span class="material-symbols-outlined text-sm">mail</span>
+                            julian@alvarez.co
+                        </div>
+<div class="flex items-center gap-2 text-[#884B3A] text-xs font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm">auto_fix_high</span>
+                            Special Net-60 Terms
+                        </div>
+</div>
+</div>
+<!-- Client Card 2 -->
+<div class="bg-white border border-stone-100 rounded-[1.5rem] p-6 hover:shadow-lg transition-all group cursor-pointer">
+<div class="flex items-center gap-4 mb-4">
+<div class="h-12 w-12 rounded-full bg-stone-100 flex items-center justify-center font-serif text-lg text-[#884B3A]">SC</div>
+<div>
+<h4 class="font-serif text-lg text-stone-800 leading-tight">Sarah Chen</h4>
+<p class="text-xs text-stone-500 font-sans">Tech Advisory</p>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center gap-2 text-stone-500 text-sm">
+<span class="material-symbols-outlined text-sm">mail</span>
+                            s.chen@advisory.io
+                        </div>
+<div class="flex items-center gap-2 text-[#884B3A] text-xs font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm">auto_fix_high</span>
+                            Premium SLA Tier
+                        </div>
+</div>
+</div>
+<!-- Client Card 3 -->
+<div class="bg-white border border-stone-100 rounded-[1.5rem] p-6 hover:shadow-lg transition-all group cursor-pointer">
+<div class="flex items-center gap-4 mb-4">
+<div class="h-12 w-12 rounded-full bg-stone-100 flex items-center justify-center font-serif text-lg text-[#884B3A]">MW</div>
+<div>
+<h4 class="font-serif text-lg text-stone-800 leading-tight">Marcus Wright</h4>
+<p class="text-xs text-stone-500 font-sans">Hospitality Group</p>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center gap-2 text-stone-500 text-sm">
+<span class="material-symbols-outlined text-sm">mail</span>
+                            m.wright@luxe.com
+                        </div>
+<div class="flex items-center gap-2 text-[#884B3A] text-xs font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm">auto_fix_high</span>
+                            Tax Exempt Status
+                        </div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Side-Drawer for Editing Client Details (Overlay) -->
+<div class="fixed inset-0 bg-stone-900/20 backdrop-blur-sm z-50 flex justify-end">
+<!-- Drawer Panel -->
+<div class="w-full max-w-md bg-white h-full shadow-2xl flex flex-col p-8 overflow-y-auto">
+<header class="flex justify-between items-center mb-10">
+<div>
+<h3 class="text-2xl font-serif text-stone-800">Edit Client</h3>
+<p class="text-stone-500 font-serif italic">Refining the connection with Elena.</p>
+</div>
+<button class="h-10 w-10 flex items-center justify-center rounded-full bg-stone-50 text-stone-400 hover:bg-stone-100">
+<span class="material-symbols-outlined">close</span>
+</button>
+</header>
+<form class="space-y-8">
+<!-- Profile Image Edit -->
+<!-- Fields -->
+<div class="space-y-6">
+<div class="space-y-2">
+<label class="text-[10px] uppercase font-bold text-stone-400 tracking-wider">Full Name</label>
+<input class="w-full border-none bg-[#FDF8F5] rounded-xl px-4 py-3 font-sans text-stone-800 focus:ring-2 focus:ring-[#884B3A]/20" type="text" value="Elena Vance"/>
+</div>
+<div class="space-y-2">
+<label class="text-[10px] uppercase font-bold text-stone-400 tracking-wider">Email Address</label>
+<input class="w-full border-none bg-[#FDF8F5] rounded-xl px-4 py-3 font-sans text-stone-800 focus:ring-2 focus:ring-[#884B3A]/20" type="email" value="elena.v@luminastudio.com"/>
+</div>
+<div class="space-y-2">
+<label class="text-[10px] uppercase font-bold text-stone-400 tracking-wider">Project Status</label>
+<select class="w-full border-none bg-[#FDF8F5] rounded-xl px-4 py-3 font-sans text-stone-800 focus:ring-2 focus:ring-[#884B3A]/20">
+<option selected="">Active Project</option>
+<option>On Hold</option>
+<option>Completed</option>
+<option>Archived</option>
+</select>
+</div>
+<div class="space-y-4">
+<label class="text-[10px] uppercase font-bold text-stone-400 tracking-wider block">Custom Overrides</label>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-3 bg-stone-50 rounded-xl border border-stone-100">
+<span class="text-sm text-stone-600 font-sans">Loyalty Discount (%)</span>
+<input class="w-16 bg-transparent border-none text-right font-bold text-[#884B3A]" type="number" value="15"/>
+</div>
+<div class="flex items-center justify-between p-3 bg-stone-50 rounded-xl border border-stone-100">
+<span class="text-sm text-stone-600 font-sans">Tax Exempt Status</span>
+<div class="w-10 h-5 bg-stone-200 rounded-full relative cursor-pointer">
+<div class="absolute left-1 top-1 w-3 h-3 bg-white rounded-full transition-all"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-10 space-y-4">
+<button class="w-full bg-[#884B3A] text-white py-4 rounded-full font-sans font-bold shadow-lg shadow-[#884B3A]/20 hover:bg-[#A56350] transition-all" type="submit">
+                        Update Client Ledger
+                    </button>
+<button class="w-full text-stone-400 text-sm font-sans font-medium hover:text-stone-600 transition-colors" type="button">
+                        Archive Client Records
+                    </button>
+</div>
+</form>
+</div>
+</div>
+</body></html>

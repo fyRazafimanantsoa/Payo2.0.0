@@ -1,0 +1,56 @@
+# Payo Application Test Report
+
+## 1. Overview
+The application was tested by performing a full end-to-end user flow: registration, onboarding, client management, invoice creation, manual reminder triggering, and administrative portal verification.
+
+---
+
+## 2. What Works (Successfully Verified)
+
+### Authentication & Onboarding
+- **Registration**: Successfully created a new user account (`testuser@example.com`).
+- **Authorization**: Correctly redirects unauthenticated users to the login/landing page.
+- **Onboarding Flow**: The onboarding bridge and email verification screens are functional. Skipping verification allows direct access to the application.
+
+### Client & Invoice Management
+- **Client Creation**: Successfully added "Test Client". The client list updates immediately.
+- **Invoice Generation**: Successfully created an invoice ($100 USD) for the new client.
+- **Invoice Detail Dialog**: Clicking an invoice opens the detailed view correctly.
+
+### Reminders & Templates
+- **Manual Reminders**: The "Send Now" feature triggers the "Review Reminder" modal. Confirming the send provides visual feedback and completes the action.
+- **System Templates**: All 20 system templates are accessible and previewable in the Template Studio.
+
+### Dashboard & Analytics
+- **User Dashboard**: Correctly displays "Total Clients" and "Total Invoices" based on the user's data.
+- **Admin Panel**: Correctly displays platform-wide stats (Total Users, Active vs. Trial).
+
+### Administration
+- **Admin Login**: Accessible via `admin@payo.com`.
+- **User Management**: The user list in the Admin Panel correctly reflects newly registered users and their current plan status.
+
+---
+
+## 3. What Does Not Work / Issues Identified
+
+### Critical / High Priority
+- **Reminders Sent Count**: The "Reminders Sent" stat on the user dashboard did not increment immediately after a manual "Send Now" action. 
+  - *Possible Reason*: There might be a delay in background job processing or a discrepancy in how manual vs. automated reminders are tracked in the database stats query.
+
+### UI / UX Issues
+- **Admin Panel Data Latency**: On initial load, the Admin Dashboard and "All Users" list sometimes show zero values or take several seconds to populate.
+  - *Possible Reason*: Could be inefficient Prisma queries or lack of loading states/caching for large datasets in the admin routes.
+- **Date Format Ambiguity**: The invoice due date uses the `jj/mm/aaaa` format. 
+  - *Issue*: This can be confusing for US-based users (who expect MM/DD) and lacks clear labeling or localization support.
+
+### Feature Limitations (By Design but Noted)
+- **Custom Template Studio**: The "Create Custom Template" feature is locked for trial users.
+  - *Impact*: While this is intended behavior, it prevents trial users from fully testing the tonal customization features before purchasing.
+- **Email Delivery**: Since the application is running in a local environment without a configured `RESEND_API_KEY`, actual emails are likely logged to the console rather than delivered to the recipient.
+
+---
+
+## 4. Recommendations
+1. **Optimize Admin Queries**: Improve the performance of the statistics gathering in `/api/admin/stats` to reduce initial load latency.
+2. **Localization Support**: Implement a setting to allow users to choose their preferred date format (MM/DD/YYYY vs DD/MM/YYYY).
+3. **Real-time Stat Updates**: Ensure the dashboard "Reminders Sent" count is updated immediately via a webhook or database trigger when a manual reminder is logged.

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,700;1,400;1,700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Public+Sans:wght@400;500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#884B3A",
+                        accent: "#D2E5CB",
+                        onAccent: "#566752",
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    fontFamily: {
+                        headline: ["Public Sans", "sans-serif"],
+                        body: ["Public Sans", "sans-serif"],
+                        label: ["Public Sans", "sans-serif"],
+                        serif: ["Newsreader", "serif"],
+                        sans: ["Plus Jakarta Sans", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #FDF8F5;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-stone-800">
+<!-- SideNavBar Shell -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-[#FDF8F5] dark:bg-stone-950 flex flex-col py-12 px-6 z-50">
+<div class="mb-12">
+<h1 class="text-2xl font-serif font-bold text-[#884B3A] dark:text-[#C27B67]">The Atelier</h1>
+<p class="font-serif italic text-stone-500 text-sm">Private Wealth Curator</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 text-stone-500 dark:text-stone-400 px-4 py-3 hover:text-[#884B3A] hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-colors duration-300 transition-all scale-95 active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-sans">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-stone-500 dark:text-stone-400 px-4 py-3 hover:text-[#884B3A] hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-colors duration-300 transition-all scale-95 active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span class="font-sans">Invoices</span>
+</a>
+<a class="flex items-center gap-3 bg-[#D2E5CB] dark:bg-[#566752]/30 text-[#566752] dark:text-[#D2E5CB] rounded-full px-4 py-3 font-semibold transition-all scale-95 active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="font-sans">Template Studio</span>
+</a>
+<a class="flex items-center gap-3 text-stone-500 dark:text-stone-400 px-4 py-3 hover:text-[#884B3A] hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-colors duration-300 transition-all scale-95 active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-sans">Clients</span>
+</a>
+</nav>
+<div class="mt-auto">
+<a class="flex items-center gap-3 text-stone-500 dark:text-stone-400 px-4 py-3 hover:text-[#884B3A] hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-colors duration-300 transition-all scale-95 active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-sans">Logout</span>
+</a>
+</div>
+</aside>
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 bg-[#FDF8F5]/80 dark:bg-stone-950/80 backdrop-blur-xl flex justify-end items-center px-8 gap-6 z-40 shadow-[0px_12px_32px_rgba(136,75,58,0.06)]">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#884B3A] cursor-pointer hover:text-[#A56350] transition-colors" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-[#884B3A] cursor-pointer hover:text-[#A56350] transition-colors" data-icon="settings">settings</span>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-stone-200">
+<img alt="Premium user avatar" data-alt="Premium user avatar, high-end professional profile photo with soft studio lighting and clean minimalist background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBifL5-VSq3CxJqAxUvXVfoL3SvH4uyuYPniYV6hiCpaBksowT3Kxy0gqd1_ZKDOaogkikZDSa-bZjOgZxUaGIHUevrlv_p4n2-RNZhFQ_UKcmAMDZrK1pHJcN_GKwm3poxjBJ_yuliKw5-_3W2OWOFE_j-xxe-oWFIF0soHWizpA3fsgN4L1mTCvw4b8M1N9nZXas08O7JeFF67y49oOUo1qdyBo5e6vohs1VAnZZclLQjR0ocoAt1ss-QC0f9C8wUNJJadhUwKdve"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-16 min-h-screen bg-[#FDF8F5]">
+<div class="p-10 max-w-7xl mx-auto">
+<header class="mb-10">
+<h2 class="text-3xl font-serif font-bold text-[#884B3A] mb-2">Template Studio</h2>
+<p class="text-stone-500 font-sans">Craft the perfect reminder tone for your private wealth clients.</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Editor Column -->
+<div class="lg:col-span-7 space-y-8">
+<!-- Tone Selector -->
+<section class="bg-white/50 border border-[#884B3A]/10 rounded-xl p-6">
+<label class="block text-sm font-semibold text-[#884B3A] uppercase tracking-wider mb-4">Reminder Tone</label>
+<div class="flex gap-4">
+<button class="flex-1 flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-[#D2E5CB] bg-[#D2E5CB]/10 text-[#566752] transition-all">
+<span class="material-symbols-outlined" data-icon="sentiment_satisfied">sentiment_satisfied</span>
+<span class="text-xs font-bold">Friendly</span>
+</button>
+<button class="flex-1 flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-transparent bg-stone-100 text-stone-500 hover:border-stone-200 transition-all">
+<span class="material-symbols-outlined" data-icon="sentiment_neutral">sentiment_neutral</span>
+<span class="text-xs font-bold">Neutral</span>
+</button>
+<button class="flex-1 flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-transparent bg-stone-100 text-stone-500 hover:border-stone-200 transition-all">
+<span class="material-symbols-outlined" data-icon="priority_high">priority_high</span>
+<span class="text-xs font-bold">Firm</span>
+</button>
+</div>
+</section>
+<!-- Content Editor -->
+<section class="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-hidden">
+<div class="bg-stone-50 px-6 py-3 border-b border-stone-100 flex justify-between items-center">
+<div class="flex gap-4">
+<button class="text-stone-400 hover:text-stone-600"><span class="material-symbols-outlined text-lg" data-icon="format_bold">format_bold</span></button>
+<button class="text-stone-400 hover:text-stone-600"><span class="material-symbols-outlined text-lg" data-icon="format_italic">format_italic</span></button>
+<button class="text-stone-400 hover:text-stone-600"><span class="material-symbols-outlined text-lg" data-icon="link">link</span></button>
+</div>
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-[#884B3A]/10 text-[#884B3A] text-[10px] font-bold rounded cursor-pointer">{client_name}</span>
+<span class="px-2 py-1 bg-[#884B3A]/10 text-[#884B3A] text-[10px] font-bold rounded cursor-pointer">{amount_due}</span>
+<span class="px-2 py-1 bg-[#884B3A]/10 text-[#884B3A] text-[10px] font-bold rounded cursor-pointer">{due_date}</span>
+</div>
+</div>
+<div class="p-6">
+<input class="w-full text-lg font-serif border-none focus:ring-0 p-0 mb-4 text-stone-800 placeholder-stone-300" type="text" value="Gentle Reminder: Your Atelier Portfolio Statement"/>
+<textarea class="w-full border-none focus:ring-0 p-0 text-stone-600 font-sans leading-relaxed resize-none" rows="12">Dear {client_name},
+
+I hope this message finds you well. 
+
+As we curate your latest portfolio updates, we noticed that invoice #{invoice_number} for {amount_due} is currently outstanding. We would appreciate it if you could attend to this at your earliest convenience to ensure uninterrupted service.
+
+Thank you for your continued trust in The Atelier.
+
+Warmly,
+The Concierge Team</textarea>
+</div>
+</section>
+<div class="flex justify-end gap-4">
+<button class="px-6 py-3 text-stone-500 font-bold hover:text-stone-800 transition-colors">Discard</button>
+<button class="px-8 py-3 bg-[#884B3A] text-white rounded-full font-bold shadow-lg hover:bg-[#A56350] transition-all transform active:scale-95">Save Template</button>
+</div>
+</div>
+<!-- Preview Column -->
+<div class="lg:col-span-5">
+<div class="sticky top-24">
+<label class="block text-sm font-semibold text-[#884B3A] uppercase tracking-wider mb-4">Live Preview</label>
+<div class="bg-white rounded-3xl shadow-[0px_40px_80px_rgba(136,75,58,0.08)] border border-stone-100 overflow-hidden">
+<!-- Mobile-ish Preview Frame -->
+<div class="bg-stone-900 px-6 py-3 flex justify-between items-center">
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-red-500/50"></div>
+<div class="w-2 h-2 rounded-full bg-yellow-500/50"></div>
+<div class="w-2 h-2 rounded-full bg-green-500/50"></div>
+</div>
+<span class="text-[10px] text-stone-500 font-mono">MAIL-CLIENT-V1.0</span>
+</div>
+<div class="p-8">
+<div class="flex items-center gap-4 mb-8">
+<div class="w-12 h-12 bg-[#FDF8F5] rounded-full flex items-center justify-center border border-[#884B3A]/20">
+<span class="text-[#884B3A] font-serif font-bold italic text-xl">A</span>
+</div>
+<div>
+<h4 class="text-sm font-bold text-stone-800">The Editorial Atelier</h4>
+<p class="text-xs text-stone-400">concierge@theatelier.com</p>
+</div>
+</div>
+<div class="space-y-4">
+<h3 class="text-xl font-serif text-stone-800 leading-tight">Gentle Reminder: Your Atelier Portfolio Statement</h3>
+<div class="h-px bg-stone-100 w-full"></div>
+<p class="text-sm text-stone-600 leading-relaxed">
+                                        Dear <span class="text-[#884B3A] font-bold">Eleanor Vance</span>,<br/><br/>
+                                        I hope this message finds you well.<br/><br/>
+                                        As we curate your latest portfolio updates, we noticed that invoice #AT-9921 for <span class="text-[#884B3A] font-bold">$12,450.00</span> is currently outstanding. We would appreciate it if you could attend to this at your earliest convenience to ensure uninterrupted service.
+                                    </p>
+<div class="py-6">
+<a class="inline-block px-8 py-3 bg-[#884B3A] text-white text-sm font-bold rounded-full" href="#">Secure Payment Portal</a>
+</div>
+<p class="text-sm text-stone-600">
+                                        Thank you for your continued trust in The Atelier.<br/><br/>
+                                        Warmly,<br/>
+<span class="font-serif italic text-stone-800">The Concierge Team</span>
+</p>
+</div>
+<div class="mt-12 pt-8 border-t border-stone-50 flex items-center justify-between">
+<img alt="Signature" class="h-8 opacity-60" data-alt="Minimalist abstract digital signature with flowing golden lines on a soft cream background and elegant script" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAo_nQtE7W_A-lf0Y25mU7buJwa-4khXFp0Y1AphQis-LCPWjWFO_K9X-ZgWSX_d1KR_vXVhYC0jAKP8Uvlku4nYQeeooE5_7h5_Q7OK4CulmV9ouEnw6acBO1TV6BQRAWyigGjM20vx10rc9HnO5aeNLF9-5f7N0rnVfZx8cLQudLUJ-e0oBC33KraaIZX1PS5JvpsPyV_G2zrr_hpzbMfHtpUHwYnTP-YoqiKPvzc4ZgXBPiQEZud8X83NwfiEJiNs7ujXV1seCyu"/>
+<span class="text-[10px] text-stone-300 font-sans tracking-widest uppercase">Member ID: 00921</span>
+</div>
+</div>
+</div>
+<!-- Info Card -->
+<div class="mt-6 p-6 bg-[#D2E5CB]/20 rounded-2xl border border-[#D2E5CB]/40">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-[#566752]" data-icon="lightbulb">lightbulb</span>
+<div>
+<h5 class="text-sm font-bold text-[#566752]">Design Tip</h5>
+<p class="text-xs text-[#566752]/80 mt-1">Friendly reminders convert 22% better for luxury services than firm notices within the first 3 days.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Payo Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#fdf8f5",
+                        "surface-dim": "#ded9d6",
+                        "on-tertiary-container": "#fbfdfb",
+                        "on-tertiary-fixed-variant": "#444746",
+                        "tertiary-fixed-dim": "#c5c7c5",
+                        "surface": "#fdf8f5",
+                        "on-background": "#1c1b1a",
+                        "on-primary-fixed-variant": "#6f3727",
+                        "on-surface": "#1c1b1a",
+                        "inverse-on-surface": "#f5f0ed",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#d8c2bc",
+                        "tertiary-fixed": "#e1e3e1",
+                        "on-primary-container": "#fffbff",
+                        "primary": "#884b3a",
+                        "surface-tint": "#8b4e3c",
+                        "tertiary": "#5a5c5b",
+                        "inverse-surface": "#32302e",
+                        "on-primary-fixed": "#380d03",
+                        "error": "#ba1a1a",
+                        "on-secondary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#e6e2df",
+                        "secondary-fixed-dim": "#b9ccb3",
+                        "tertiary-container": "#727574",
+                        "surface-container": "#f2edea",
+                        "primary-fixed": "#ffdbd1",
+                        "surface-variant": "#e6e2df",
+                        "secondary-fixed": "#d5e8ce",
+                        "background": "#fdf8f5",
+                        "on-tertiary-fixed": "#191c1b",
+                        "secondary-container": "#d2e5cb",
+                        "primary-container": "#a56350",
+                        "outline": "#85736e",
+                        "surface-container-high": "#ece7e4",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#53433f",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f8f3f0",
+                        "inverse-primary": "#ffb5a0",
+                        "on-secondary-container": "#566752",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "secondary": "#52634e",
+                        "on-secondary-fixed-variant": "#3b4b38",
+                        "on-secondary-fixed": "#101f0f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": [
+                            "Newsreader", "serif"
+                        ],
+                        "body": [
+                            "Plus Jakarta Sans", "sans-serif"
+                        ],
+                        "label": [
+                            "Plus Jakarta Sans", "sans-serif"
+                        ]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+        h1, h2, h3, h4, h5, h6, .font-headline {
+            font-family: 'Newsreader', serif;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, theme('colors.primary') 0%, theme('colors.primary-container') 100%);
+            color: theme('colors.on-primary');
+            border-radius: theme('borderRadius.lg');
+            transition: all 300ms ease-in-out;
+        }
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+        .btn-secondary {
+            background-color: theme('colors.secondary-container');
+            color: theme('colors.on-secondary-container');
+            border-radius: theme('borderRadius.DEFAULT');
+            transition: all 300ms ease-in-out;
+        }
+        .btn-secondary:hover {
+            opacity: 0.9;
+        }
+        .nav-pill-active {
+            background-color: theme('colors.secondary-container');
+            color: theme('colors.on-secondary-container');
+            border-radius: theme('borderRadius.full');
+        }
+        .card-surface {
+            background-color: theme('colors.surface-container-low');
+            border-radius: theme('borderRadius.lg');
+            transition: all 300ms ease-in-out;
+        }
+        .card-surface:hover {
+            background-color: theme('colors.surface-container-highest');
+        }
+        /* Hide scrollbar for clean look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: theme('colors.surface-variant');
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: theme('colors.outline');
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex selection:bg-primary-container selection:text-on-primary-container">
+<!-- Persistent Sidebar -->
+<aside class="w-72 flex-shrink-0 bg-surface-container-low min-h-screen flex flex-col pt-12 pb-8 px-6 border-r border-surface-variant/30 sticky top-0 h-screen overflow-y-auto">
+<div class="flex items-center gap-4 mb-12 px-2">
+<div class="bg-primary/10 rounded-full p-2">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="account_balance_wallet" data-weight="fill" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+</div>
+<div>
+<h1 class="font-headline text-2xl font-bold text-on-surface tracking-tight">Payo</h1>
+<p class="font-label text-xs text-on-surface-variant mt-0.5 uppercase tracking-widest">Atelier Edition</p>
+</div>
+</div>
+<nav class="flex-1 space-y-3">
+<a class="flex items-center gap-4 px-4 py-3 nav-pill-active font-body font-medium transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="dashboard" data-weight="fill" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest/50 rounded-full font-body transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="receipt_long">receipt_long</span>
+                Ledger
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest/50 rounded-full font-body transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="notifications_active">notifications_active</span>
+                Reminders
+                <span class="ml-auto bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full">3</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest/50 rounded-full font-body transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="group">group</span>
+                Clients
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest/50 rounded-full font-body transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="tune">tune</span>
+                Preferences
+            </a>
+</nav>
+<div class="mt-auto pt-8 border-t border-surface-variant/30">
+<div class="flex items-center gap-3 px-2">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden border-2 border-surface flex-shrink-0">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="Portrait of a sophisticated professional man with warm studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLQm4xvoCwdumZTBZUrg-b1NPpLdXwGsn_Diu9DI1vQOqIYtYjueqpyGynG7IX7U77KYcvW04vOAvuwd3c8ld5nF-YTFrSi2016pcJD_lr4Gc_GzjxIs0oaAUGVOBqrJodoxYJdjMaSSz2rco_wCIEx--yWVH9pBDyy5W0A2Aal97mG9NPKxY_ln5XyETeu428P9DYB0Y7ibk1HXuPYz4VzJfqP5fveK7QjcnhO1wPrhAECnjQTiz89f4Zhfoe4F450YnIacbxZUEX"/>
+</div>
+<div class="overflow-hidden">
+<p class="font-body text-sm font-semibold text-on-surface truncate">E. Kensington</p>
+<p class="font-label text-xs text-on-surface-variant truncate">Curator</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col min-w-0 bg-surface">
+<!-- Header -->
+<header class="px-12 py-10 flex justify-between items-end max-w-7xl w-full mx-auto">
+<div class="max-w-2xl">
+<p class="font-label text-sm text-primary mb-2 tracking-wide font-medium">Overview</p>
+<h2 class="font-headline text-5xl font-normal text-on-surface leading-tight tracking-tight">Welcome back, Kensington.</h2>
+<p class="font-body text-base text-on-surface-variant mt-3 leading-relaxed">The portfolio is performing steadily today. 5 pending confirmations require your attention.</p>
+</div>
+<div class="flex gap-4">
+<button class="btn-secondary px-6 py-2.5 font-body text-sm font-medium flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="download">download</span>
+                    Export Ledger
+                </button>
+<button class="btn-primary px-6 py-2.5 font-body text-sm font-medium flex items-center gap-2 shadow-[0_12px_32px_rgba(136,75,58,0.15)]">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+                    New Invoice
+                </button>
+</div>
+</header>
+<div class="px-12 pb-16 flex-1 max-w-7xl w-full mx-auto">
+<!-- Bento Grid Stats -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+<!-- Outstanding Balance -->
+<div class="col-span-1 md:col-span-2 bg-surface-container-low rounded-[1.5rem] p-8 flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1 group">
+<div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-body text-sm text-on-surface-variant font-medium">Outstanding Balance</h3>
+<span class="material-symbols-outlined text-primary/50" data-icon="account_balance">account_balance</span>
+</div>
+<p class="font-headline text-[3.5rem] leading-none text-on-surface font-light tracking-tight">$45,000<span class="text-2xl text-on-surface-variant/50 ml-1">.00</span></p>
+</div>
+<div class="mt-8 flex items-center gap-2">
+<span class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded-md text-xs font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span>
+                            5.2%
+                        </span>
+<span class="font-label text-xs text-on-surface-variant">vs last month</span>
+</div>
+</div>
+<!-- Overdue Total -->
+<div class="col-span-1 bg-surface-container-low rounded-[1.5rem] p-6 flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1">
+<div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-body text-sm text-on-surface-variant font-medium">Overdue Total</h3>
+<span class="material-symbols-outlined text-error/50" data-icon="warning">warning</span>
+</div>
+<p class="font-headline text-3xl leading-none text-on-surface font-normal tracking-tight">$12,500</p>
+</div>
+<div class="mt-6 flex items-center gap-2">
+<span class="bg-error-container text-on-error-container px-2 py-1 rounded-md text-xs font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_down">trending_down</span>
+                            2.1%
+                        </span>
+</div>
+</div>
+<!-- Paid This Month -->
+<div class="col-span-1 bg-surface-container-low rounded-[1.5rem] p-6 flex flex-col justify-between transition-transform duration-300 hover:-translate-y-1">
+<div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-body text-sm text-on-surface-variant font-medium">Paid This Month</h3>
+<span class="material-symbols-outlined text-secondary/50" data-icon="check_circle">check_circle</span>
+</div>
+<p class="font-headline text-3xl leading-none text-on-surface font-normal tracking-tight">$85,200</p>
+</div>
+<div class="mt-6 flex items-center gap-2">
+<span class="bg-secondary-container text-on-secondary-container px-2 py-1 rounded-md text-xs font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span>
+                            12.4%
+                        </span>
+</div>
+</div>
+<!-- Pending Confirmation -->
+<div class="col-span-1 md:col-span-2 bg-surface-container-low rounded-[1.5rem] p-6 flex items-center justify-between transition-transform duration-300 hover:-translate-y-1">
+<div>
+<h3 class="font-body text-sm text-on-surface-variant font-medium mb-2">Pending Confirmation</h3>
+<p class="font-headline text-4xl leading-none text-on-surface font-normal tracking-tight">5 <span class="text-xl text-on-surface-variant font-body">Invoices</span></p>
+</div>
+<div class="w-12 h-12 rounded-full bg-primary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="hourglass_empty">hourglass_empty</span>
+</div>
+</div>
+<!-- Delivery Health -->
+<div class="col-span-1 md:col-span-2 bg-surface-container-low rounded-[1.5rem] p-6 flex flex-col justify-center transition-transform duration-300 hover:-translate-y-1">
+<div class="flex items-end justify-between mb-4">
+<div>
+<h3 class="font-body text-sm text-on-surface-variant font-medium mb-1">Delivery Health</h3>
+<p class="font-headline text-2xl text-on-surface leading-none">92% Success Rate</p>
+</div>
+<span class="font-label text-xs text-on-surface-variant">Last 30 days</span>
+</div>
+<div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden mt-2">
+<div class="h-full bg-primary rounded-full" style="width: 92%;"></div>
+</div>
+</div>
+</div>
+<!-- Asymmetrical Layout: Activity & Quick Actions -->
+<div class="flex flex-col lg:flex-row gap-12">
+<!-- Recent Activity Feed -->
+<div class="flex-1">
+<div class="flex items-center justify-between mb-6">
+<h2 class="font-headline text-3xl text-on-surface font-normal">Recent Reminders</h2>
+<a class="font-body text-sm text-primary font-medium hover:underline" href="#">View Ledger</a>
+</div>
+<div class="space-y-2">
+<!-- Activity Item 1 -->
+<div class="group flex items-center gap-6 p-4 rounded-xl hover:bg-surface-container-lowest transition-colors cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center flex-shrink-0 text-on-surface-variant group-hover:bg-primary-container/10 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="mail">mail</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-body text-base text-on-surface font-medium truncate">Aurelia Holdings Inc.</p>
+<p class="font-body text-sm text-on-surface-variant truncate">Final Notice Sent • Invoice #INV-2023-089</p>
+</div>
+<div class="text-right flex-shrink-0">
+<p class="font-headline text-lg text-on-surface">$12,500</p>
+<p class="font-label text-xs text-on-surface-variant">2h ago</p>
+</div>
+</div>
+<!-- Activity Item 2 -->
+<div class="group flex items-center gap-6 p-4 rounded-xl hover:bg-surface-container-lowest transition-colors cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center flex-shrink-0 text-on-surface-variant group-hover:bg-secondary-container/30 group-hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="check_circle">check_circle</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-body text-base text-on-surface font-medium truncate">The Vanguard Group</p>
+<p class="font-body text-sm text-on-surface-variant truncate">Payment Confirmed • Invoice #INV-2023-091</p>
+</div>
+<div class="text-right flex-shrink-0">
+<p class="font-headline text-lg text-on-surface">$4,200</p>
+<p class="font-label text-xs text-on-surface-variant">5h ago</p>
+</div>
+</div>
+<!-- Activity Item 3 -->
+<div class="group flex items-center gap-6 p-4 rounded-xl hover:bg-surface-container-lowest transition-colors cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center flex-shrink-0 text-on-surface-variant group-hover:bg-primary-container/10 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="schedule_send">schedule_send</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-body text-base text-on-surface font-medium truncate">Meridian Capital</p>
+<p class="font-body text-sm text-on-surface-variant truncate">Reminder Scheduled • Invoice #INV-2023-094</p>
+</div>
+<div class="text-right flex-shrink-0">
+<p class="font-headline text-lg text-on-surface">$8,950</p>
+<p class="font-label text-xs text-on-surface-variant">Yesterday</p>
+</div>
+</div>
+<!-- Activity Item 4 -->
+<div class="group flex items-center gap-6 p-4 rounded-xl hover:bg-surface-container-lowest transition-colors cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center flex-shrink-0 text-on-surface-variant group-hover:bg-primary-container/10 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="drafts">drafts</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-body text-base text-on-surface font-medium truncate">Silica Networks</p>
+<p class="font-body text-sm text-on-surface-variant truncate">Opened Reminder • Invoice #INV-2023-085</p>
+</div>
+<div class="text-right flex-shrink-0">
+<p class="font-headline text-lg text-on-surface">$1,100</p>
+<p class="font-label text-xs text-on-surface-variant">Yesterday</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Context / Quick Actions -->
+<div class="w-full lg:w-80 flex-shrink-0">
+<div class="bg-surface-container-low rounded-[1.5rem] p-6 mb-6 relative overflow-hidden group">
+<!-- Subtle background texture -->
+<div class="absolute inset-0 opacity-10 mix-blend-multiply bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] pointer-events-none"></div>
+<h3 class="font-headline text-2xl text-on-surface mb-4 relative z-10">Curate Your Workflow</h3>
+<p class="font-body text-sm text-on-surface-variant mb-6 relative z-10">Automate your reminders to ensure elegant, timely follow-ups without manual intervention.</p>
+<button class="w-full text-left bg-surface rounded-xl p-4 flex items-center gap-3 group-hover:bg-surface-container-highest transition-colors relative z-10 shadow-sm border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome">auto_awesome</span>
+<div>
+<p class="font-body text-sm font-medium text-on-surface">Setup Automation</p>
+<p class="font-label text-xs text-on-surface-variant">2 mins to configure</p>
+</div>
+</button>
+</div>
+<div class="p-4">
+<p class="font-label text-xs text-on-surface-variant uppercase tracking-widest mb-4">Quick Insights</p>
+<div class="space-y-4">
+<div>
+<p class="font-body text-sm text-on-surface-variant flex justify-between">Average Time to Pay <span>14 Days</span></p>
+<div class="h-1 w-full bg-surface-variant rounded-full mt-1"><div class="h-full bg-secondary rounded-full" style="width: 45%;"></div></div>
+</div>
+<div>
+<p class="font-body text-sm text-on-surface-variant flex justify-between">Email Open Rate <span>88%</span></p>
+<div class="h-1 w-full bg-surface-variant rounded-full mt-1"><div class="h-full bg-secondary rounded-full" style="width: 88%;"></div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

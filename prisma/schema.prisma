@@ -1,0 +1,215 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// =============================================================================
+// USER
+// =============================================================================
+model User {
+  id                  String    @id @default(cuid())
+  email               String    @unique
+  hashedPassword      String
+  businessName        String
+  defaultReminderTone String    @default("friendly") // friendly, neutral, firm
+  planType            String    @default("trial")     // trial | starter | pro
+  subscriptionStatus  String    @default("trial")     // trial | active | overdue | suspended | cancelled
+  trialEndsAt         DateTime?
+  isAdmin             Boolean   @default(false)
+  emailVerified       Boolean   @default(false)
+  emailVerifiedAt     DateTime?
+  locale              String    @default("en-US")
+  invoicePattern      String    @default("INV-{{YEAR}}-{{ID}}") // Default pattern
+  deletedAt           DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  clients             Client[]
+  invoices            Invoice[]
+  templates           Template[]
+  reminderLogs        ReminderLog[]
+  subscriptions       Subscription[]
+  subscriptionHistory SubscriptionHistory[]
+  sessions            Session[]
+  adminLogs           AdminLog[]       @relation("AdminLogs")
+  adminLogTargets     AdminLog[]       @relation("AdminLogTargets")
+}
+
+// =============================================================================
+// CLIENT
+// =============================================================================
+model Client {
+  id                 String   @id @default(cuid())
+  userId             String
+  name               String
+  primaryEmail       String
+  ccEmails           String   @default("[]") // JSON-encoded array of email strings
+  assignedTemplateId String?  // Links to a specific template for custom terms
+  preferredCurrency  String   @default("USD")
+  locale             String?
+  emailStatus        String   @default("active") // active | bounced | complained
+  skipReminderReview Boolean  @default(false)
+  lastInvoiceNumber  Int      @default(0)
+  notes              String?
+  deletedAt          DateTime?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id])
+  invoices Invoice[]
+}
+
+// =============================================================================
+// INVOICE
+// =============================================================================
+model Invoice {
+  id                   String    @id @default(cuid())
+  userId               String
+  clientId             String
+  invoiceNumber        String
+  amountDue            Float     // stored as numeric
+  currency             String    @default("USD")
+  issueDate            DateTime
+  dueDate              DateTime
+  currentStatus        String    @default("upcoming") // upcoming, pending, overdue_1, overdue_2, pending_confirmation, paid, uncollectible
+  proofOfPaymentUrl    String?
+  lastReminderSentAt   DateTime?
+  nextReminderDate     DateTime?
+  lastReminderStatus   String?   // sent | failed | bounced
+  reminderCount        Int       @default(0)
+  consecutiveFailures  Int       @default(0)
+  notes                String?
+  deletedAt            DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id])
+  client      Client   @relation(fields: [clientId], references: [id])
+  reminderLogs ReminderLog[]
+}
+
+// =============================================================================
+// TEMPLATE
+// =============================================================================
+model Template {
+  id           String   @id @default(cuid())
+  userId       String?  // Null for system templates
+  type         String   @default("system") // system, user_custom
+  name         String
+  subjectLine  String
+  htmlBody     String
+  triggerPoint String   // e.g., 'pre_due_7', 'overdue_3', 'final_notice', 'consolidated_weekly', etc.
+  tone         String   @default("friendly") // friendly, neutral, firm
+  isActive     Boolean  @default(true)
+  deletedAt    DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user         User?            @relation(fields: [userId], references: [id])
+  reminderLogs ReminderLog[]
+}
+
+// =============================================================================
+// REMINDER LOG
+// =============================================================================
+model ReminderLog {
+  id                String   @id @default(cuid())
+  invoiceId         String
+  userId            String
+  templateId        String?
+  sentAt            DateTime @default(now())
+  recipientEmail    String
+  ccEmails          String   @default("[]") // JSON array
+  emailSubject      String
+  emailBodyHtml     String
+  status            String   @default("sent") // sent | failed | bounced | blocked
+  providerMessageId String?
+  failureReason     String?
+
+  invoice           Invoice  @relation(fields: [invoiceId], references: [id])
+  user              User     @relation(fields: [userId], references: [id])
+  template          Template? @relation(fields: [templateId], references: [id])
+}
+
+// =============================================================================
+// SUBSCRIPTION
+// =============================================================================
+model Subscription {
+  id                 String    @id @default(cuid())
+  userId             String
+  planType           String    @default("starter") // starter | pro
+  amount             Float     @default(0)
+  currency           String    @default("USD")
+  billingCycle       String    @default("monthly") // monthly | annual
+  dueDate            DateTime
+  status             String    @default("pending") // pending | overdue | paid | cancelled
+  overdueSince       DateTime?
+  paidAt             DateTime?
+  markedPaidBy       String?
+  lastReminderSentAt DateTime?
+  nextReminderDate   DateTime?
+  createdAt          DateTime  @default(now())
+
+  user               User      @relation(fields: [userId], references: [id])
+  history            SubscriptionHistory[]
+}
+
+// =============================================================================
+// SUBSCRIPTION HISTORY
+// =============================================================================
+model SubscriptionHistory {
+  id              String   @id @default(cuid())
+  userId          String
+  subscriptionId  String
+  planType        String
+  amount          Float
+  currency        String
+  billingCycle    String
+  paidAt          DateTime
+  markedPaidBy    String
+  periodStart     DateTime
+  periodEnd       DateTime
+  notes           String?
+  createdAt       DateTime @default(now())
+
+  user            User          @relation(fields: [userId], references: [id])
+  subscription    Subscription  @relation(fields: [subscriptionId], references: [id])
+}
+
+// =============================================================================
+// ADMIN LOG
+// =============================================================================
+model AdminLog {
+  id                   String   @id @default(cuid())
+  adminId              String
+  action               String   // suspend_user | reactivate_user | mark_paid | send_reminder | cancel_plan | downgrade_plan | change_plan
+  targetUserId         String
+  targetSubscriptionId String?
+  previousValue        String?  // JSON string
+  newValue             String?  // JSON string
+  notes                String?
+  performedAt          DateTime @default(now())
+  ipAddress            String?
+
+  admin                User     @relation("AdminLogs", fields: [adminId], references: [id])
+  targetUser           User     @relation("AdminLogTargets", fields: [targetUserId], references: [id])
+}
+
+// =============================================================================
+// SESSION
+// =============================================================================
+model Session {
+  id         String   @id @default(cuid())
+  userId     String
+  tokenHash  String
+  expiresAt  DateTime
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id])
+}
