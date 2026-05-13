@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
@@ -60,6 +61,56 @@ export async function sendEmail(options: SendEmailOptions): Promise<SendEmailRes
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "Unknown email error";
     console.error("Failed to send email:", errorMessage);
+    return {
+      success: false,
+      error: errorMessage,
+    };
+  }
+}
+
+export interface GmailSendOptions {
+  to: string;
+  subject: string;
+  html: string;
+  senderEmail: string;
+  senderAppPassword: string;
+}
+
+/**
+ * Send an email using Nodemailer with dynamic Gmail credentials.
+ * Each user provides their own Gmail App Password for sending.
+ */
+export async function sendEmailWithGmail(options: GmailSendOptions): Promise<SendEmailResult> {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: options.senderEmail,
+      pass: options.senderAppPassword,
+    },
+  });
+
+  try {
+    const info = await transporter.sendMail({
+      from: options.senderEmail,
+      to: options.to,
+      subject: options.subject,
+      html: options.html,
+    });
+
+    console.log(`=== GMAIL EMAIL SENT ===`);
+    console.log(`From: ${options.senderEmail}`);
+    console.log(`To: ${options.to}`);
+    console.log(`Subject: ${options.subject}`);
+    console.log(`Message ID: ${info.messageId}`);
+    console.log(`========================`);
+
+    return {
+      success: true,
+      messageId: info.messageId,
+    };
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "Unknown email error";
+    console.error("Failed to send Gmail email:", errorMessage);
     return {
       success: false,
       error: errorMessage,

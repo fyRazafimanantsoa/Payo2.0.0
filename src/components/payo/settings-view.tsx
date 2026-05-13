@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -44,6 +44,9 @@ import {
   Save,
   Globe,
   MessageSquare,
+  Mail,
+  ShieldCheck,
+  ExternalLink,
 } from 'lucide-react'
 import { usePayoStore } from '@/lib/store'
 import { toast } from 'sonner'
@@ -82,6 +85,14 @@ export function SettingsView() {
 
   // Reminder tone
   const [reminderTone, setReminderTone] = useState(user?.defaultReminderTone || 'friendly')
+
+  // Gmail settings
+  const [senderEmail, setSenderEmail] = useState("")
+  const [senderAppPassword, setSenderAppPassword] = useState("")
+  const [showAppPassword, setShowAppPassword] = useState(false)
+  const [hasExistingAppPassword, setHasExistingAppPassword] = useState(false)
+  const [gmailLoading, setGmailLoading] = useState(false)
+  const [gmailSaved, setGmailSaved] = useState(false)
 
   // Delete account
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -201,6 +212,60 @@ export function SettingsView() {
     }
   }
 
+  // Load existing Gmail settings on mount
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const res = await fetch('/api/user/settings')
+        if (res.ok) {
+          const data = await res.json()
+          if (data.senderEmail) setSenderEmail(data.senderEmail)
+          if (data.hasAppPassword) setHasExistingAppPassword(true)
+        }
+      } catch {
+        // silent
+      }
+    }
+    loadSettings()
+  }, [])
+
+  const handleSaveGmailSettings = async () => {
+    if (!senderEmail) {
+      toast.error('Please enter your Gmail address')
+      return
+    }
+    setGmailLoading(true)
+    setGmailSaved(false)
+    try {
+      const body: Record<string, string> = { senderEmail }
+      // Only include app password if user entered a new one
+      if (senderAppPassword) {
+        body.senderAppPassword = senderAppPassword
+      }
+
+      const res = await fetch('/api/user/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      })
+
+      if (res.ok) {
+        toast.success('Gmail settings saved successfully')
+        setGmailSaved(true)
+        setHasExistingAppPassword(true)
+        setSenderAppPassword('')
+        setTimeout(() => setGmailSaved(false), 3000)
+      } else {
+        const data = await res.json()
+        toast.error('Failed to save settings', { description: data.error })
+      }
+    } catch {
+      toast.error('Connection failure')
+    } finally {
+      setGmailLoading(false)
+    }
+  }
+
   if (!user) return null
 
   const planLabel = user.planType === 'trial'
@@ -299,6 +364,87 @@ export function SettingsView() {
             <button onClick={handleSaveTone} disabled={loading || reminderTone === user.defaultReminderTone} className="btn-primary px-8 py-3 rounded-full font-bold flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-105 transition-all text-xs uppercase tracking-widest">
               {loading && <Loader2 className="w-4 h-4 animate-spin" />} Update Signature Tone
             </button>
+          </section>
+
+          {/* Email / Gmail Settings */}
+          <section className="space-y-8">
+            <div className="flex items-center gap-4">
+              <div className="h-px flex-1 bg-border/30" />
+              <h3 className="font-serif text-xl italic text-primary shrink-0">Email Configuration</h3>
+              <div className="h-px flex-1 bg-border/30" />
+            </div>
+
+            <div className="bg-white p-8 rounded-[2rem] border border-border/20 shadow-sm space-y-6">
+              <div className="flex items-start gap-4 p-4 bg-primary/5 rounded-2xl border border-primary/10">
+                <Mail className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-semibold text-foreground">Gmail Integration</p>
+                  <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+                    Connect your Gmail account to send AI-powered overdue invoice reminders directly to your clients.
+                    Your credentials are stored securely and used only for sending reminder emails.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest pl-1">Your Gmail Address</Label>
+                <div className="relative group">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                  <Input
+                    type="email"
+                    value={senderEmail}
+                    onChange={(e) => setSenderEmail(e.target.value)}
+                    placeholder="your.name@gmail.com"
+                    className="pl-12 h-12 bg-muted/10 border-border/30 rounded-xl focus:ring-primary/10 focus:border-primary transition-all"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest pl-1">Gmail App Password</Label>
+                <div className="relative group">
+                  <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                  <Input
+                    type={showAppPassword ? 'text' : 'password'}
+                    value={senderAppPassword}
+                    onChange={(e) => setSenderAppPassword(e.target.value)}
+                    placeholder={hasExistingAppPassword ? "•••••••••••••••• (enter new to change)" : "xxxx xxxx xxxx xxxx"}
+                    className="pl-12 pr-12 h-12 bg-muted/10 border-border/30 rounded-xl focus:ring-primary/10 focus:border-primary transition-all"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowAppPassword(!showAppPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    {showAppPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                <div className="flex items-start gap-2 pl-1">
+                  <ExternalLink className="w-3.5 h-3.5 text-muted-foreground shrink-0 mt-0.5" />
+                  <p className="text-[10px] text-muted-foreground leading-relaxed">
+                    You must generate an App Password in your Google Account (<a href="https://myaccount.google.com/apppasswords" target="_blank" rel="noopener noreferrer" className="text-primary underline hover:text-primary/80">Security → 2-Step Verification → App Passwords</a>) for this to work. Your regular password will not work.
+                  </p>
+                </div>
+              </div>
+
+              {gmailSaved && (
+                <div className="flex items-center gap-2 p-3 bg-secondary/10 border border-secondary/20 rounded-xl">
+                  <ShieldCheck className="w-4 h-4 text-secondary-foreground" />
+                  <span className="text-xs font-semibold text-secondary-foreground">Gmail settings saved successfully!</span>
+                </div>
+              )}
+
+              <div className="flex justify-end pt-4">
+                <button
+                  onClick={handleSaveGmailSettings}
+                  disabled={gmailLoading || !senderEmail}
+                  className="btn-primary px-8 py-3 rounded-full font-bold shadow-lg transition-all text-xs uppercase tracking-widest flex items-center gap-2"
+                >
+                  {gmailLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+                  Save Settings
+                </button>
+              </div>
+            </div>
           </section>
 
           {/* Security */}
